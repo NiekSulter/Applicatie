@@ -4,28 +4,32 @@
 
 {% block body %}
 
-    <form method="post">
-        <div class="input_wrapper">
-            <label>Ziektebeeld (AND): </label><input type="text" placeholder="bijv. deafness" name="and">
+    <div class="border">
+        <div class="col-2 p-2 mx-auto">
+            <form method="post">
+                <div class="input_wrapper">
+                    <label>Ziektebeeld (AND): </label><input type="text" placeholder="bijv. deafness" name="and">
+                </div>
+                <button class="add_button" type="button">+</button>
+                <br>
+                <br>
+                <div class="input_wrapper_OR">
+                    <label>Ziektebeeld (OR): </label><input type="text" placeholder="bijv. night blindness" name="or">
+                </div>
+                <button class="add_button_OR" type="button">+</button>
+                <br>
+                <br>
+                <label>Zoekdatum vanaf: </label><input type="date" id="datepicker" name="datepicker">
+                <br>
+                <br>
+                <label>Exclude genpanel: </label><select id="genpanel_selector" name="genpanels">
+                    <option value="None">None</option>
+                </select>
+                <br>
+                <br>
+                <button type="submit">Zoeken</button>
+            </form>
         </div>
-        <button class="add_button" type="button">+</button>
-        <br>
-        <br>
-        <div class="input_wrapper_OR">
-            <label>Ziektebeeld (OR): </label><input type="text" placeholder="bijv. night blindness" name="or">
-        </div>
-        <button class="add_button_OR" type="button">+</button>
-        <br>
-        <br>
-        <label>Zoekdatum vanaf: </label><input type="date" id="datepicker" name="datepicker">
-        <br>
-        <br>
-        <label>Exclude genpanel: </label><select id="genpanel_selector" name="genpanels">
-            <option value="None">None</option>
-        </select>
-        <br>
-        <br>
-        <button type="submit">Zoeken</button>
-    </form>
+    </div>
 
 {% endblock %}
