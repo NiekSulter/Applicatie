@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} Gene finder {% endblock %}
+
+{% block body %}
+
+    <h1>Results go brr</h1>
+
+    <br>
+
+    <div class="col-6 float-left p-6">
+        <div class="markdown-body">
+
+            <p>Gevonden resultaten van zoekopdracht: {UID PLACEHOLDER}</p>
+
+            <table>
+                    <tr>
+                        <th>Gene Symbol</th>
+                        <th>Gene id</th>
+                        <th>Count</th>
+                        <th>Article id</th>
+                    </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-6 float-left p-6">
+        <div class="markdown-body">
+                <p>Gevonden resultaten van zoekopdracht: {UID PLACEHOLDER}</p>
+                    <table>
+                        <tr>
+                            <th>Disease Name</th>
+                            <th>MESH id</th>
+                            <th>Count</th>
+                            <th>Article id</th>
+                        </tr>
+                    </table>
+            </div>
+    </div>
+
+{% endblock %}
