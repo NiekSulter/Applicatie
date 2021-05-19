@@ -2,7 +2,6 @@ from datetime import timedelta
 from flask import Flask, render_template, url_for, request, redirect, session, flash, get_flashed_messages
 from Processing import pubmed_request as pr
 from Database.databasemanager import DatabaseManager
-import pickle
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "DEVKEYCHANGEPLEASE"

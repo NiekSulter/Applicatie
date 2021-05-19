@@ -2,8 +2,6 @@ from Bio import Entrez
 import requests
 from Processing import parse_pubtator_output
 from Database.databasemanager import DatabaseManager
-import json
-#from .variables import NCBI_API_KEY, NCBI_API_MAIL
 
 
 def build_term(TOR, TAND):
