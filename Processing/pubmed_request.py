@@ -1,6 +1,7 @@
 from Bio import Entrez
 import requests
-from .variables import NCBI_API_KEY, NCBI_API_MAIL
+from Processing import parse_pubtator_output
+#from .variables import NCBI_API_KEY, NCBI_API_MAIL
 
 
 def build_term(TOR, TAND):
@@ -31,21 +32,23 @@ def annotate_search(idList):
     ids = ','.join(idList)
 
     url = f"https://www.ncbi.nlm.nih.gov/research/pubtator-api/publications" \
-          f"/export/pubtator?pmids={ids}&concepts=gene"
+          f"/export/pubtator?pmids={ids}&concepts=gene,disease"
     result = requests.get(url)
 
-    print(result.text)
+    genes, diseases = parse_pubtator_output.extract_gene(result.text)
+
+    return genes, diseases
 
 
 def make_request(TOR, TAND, date):
-    Entrez.email = NCBI_API_MAIL
-    Entrez.api_key = NCBI_API_KEY
+    #Entrez.email = NCBI_API_MAIL
+    #Entrez.api_key = NCBI_API_KEY
 
     term = build_term(TOR, TAND)
     idList = article_search(term, date)
     annotate_search(idList)
 
-
+'''
 class PubmedPipeline:
 
     def __init__(self):
@@ -80,3 +83,4 @@ class PubmedPipeline:
         result = requests.get(url)
 
         print(result.text)
+'''
