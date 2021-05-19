@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, redirect, session
 from Processing import pubmed_request as pr
 
 app = Flask(__name__)
@@ -20,13 +20,20 @@ def search():
         genpanel = request.form['genpanels']
 
         genes, diseases = pr.make_request(TOR, TAND, str(date))
+        session['genes'] = genes
+        session['diseases'] = diseases
+        return redirect(url_for('vis_results', genes=genes, diseases=diseases))
 
     return render_template("search.html")
 
 
 @app.route('/results', methods=['POST', 'GET'])
 def vis_results():
-    return render_template("results.html")
+    genes = session['genes']
+    diseases = session['diseases']
+    print(genes)
+    print(diseases)
+    return render_template("results.html", genes=genes, diseases=diseases)
 
 
 if __name__ == '__main__':
