@@ -1,6 +1,8 @@
 from Bio import Entrez
 import requests
 from Processing import parse_pubtator_output
+from Database.databasemanager import DatabaseManager
+import json
 #from .variables import NCBI_API_KEY, NCBI_API_MAIL
 
 
@@ -37,7 +39,11 @@ def annotate_search(idList):
 
     genes, diseases = parse_pubtator_output.extract_gene(result.text)
 
-    return genes, diseases
+    dm = DatabaseManager()
+
+    uuid = dm.insert_zoekopdracht(genes, diseases)
+
+    return genes, diseases, uuid
 
 
 def make_request(TOR, TAND, date):

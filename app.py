@@ -19,10 +19,12 @@ def search():
         date = request.form['datepicker']
         genpanel = request.form['genpanels']
 
-        genes, diseases = pr.make_request(TOR, TAND, str(date))
+        genes, diseases, uuid = pr.make_request(TOR, TAND, str(date))
         session['genes'] = genes
         session['diseases'] = diseases
-        return redirect(url_for('vis_results', genes=genes, diseases=diseases))
+        session['uuid'] = uuid
+        return redirect(url_for('vis_results', genes=genes, diseases=diseases,
+                                uuid=uuid))
 
     return render_template("search.html")
 
@@ -31,9 +33,13 @@ def search():
 def vis_results():
     genes = session['genes']
     diseases = session['diseases']
-    print(genes)
-    print(diseases)
-    return render_template("results.html", genes=genes, diseases=diseases)
+    uuid = session['uuid']
+    return render_template("results.html", genes=genes, diseases=diseases, uuid=uuid)
+
+
+@app.route('/history', methods=['POST', 'GET'])
+def history():
+    return render_template("history.html")
 
 
 if __name__ == '__main__':
