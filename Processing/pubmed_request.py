@@ -43,11 +43,13 @@ def annotate_search(idList):
 
     uuid = dm.insert_zoekopdracht(genes, diseases)
 
+    dm.close_conn()
+
     return genes, diseases, uuid
 
 
-def make_request(TOR, TAND, date):
-    #Entrez.email = NCBI_API_MAIL
+def make_request(TOR, TAND, date, email):
+    Entrez.email = email
     #Entrez.api_key = NCBI_API_KEY
 
     term = build_term(TOR, TAND)
