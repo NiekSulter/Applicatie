@@ -4,6 +4,7 @@ from Processing import pubmed_request as pr
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "DEVKEYCHANGEPLEASE"
 
+
 @app.route('/', methods=['POST', 'GET'])
 def index():
     return render_template("home.html")
@@ -18,7 +19,7 @@ def search():
         date = request.form['datepicker']
         genpanel = request.form['genpanels']
 
-        pr.make_request(TOR, TAND, str(date))
+        genes, diseases = pr.make_request(TOR, TAND, str(date))
 
     return render_template("search.html")
 

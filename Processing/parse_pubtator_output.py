@@ -14,11 +14,17 @@ def extract_gene(results):
                 if name in genes.keys():
                     genes[name][2] += 1
                 else:
-                    genes[name] = [line_list[0], line_list[5], 1]
+                    try:
+                        genes[name] = [line_list[0], line_list[5], 1]
+                    except IndexError:
+                        genes[name] = [line_list[0], '-', 1]
             elif anno_type == "DISEASE":
-                if anno_type in diseases:
-                    genes[name][2] += 1
+                if name in diseases.keys():
+                    diseases[name][2] += 1
                 else:
-                    genes[name] = [line_list[0], line_list[5], 1]
+                    try:
+                        diseases[name] = [line_list[0], line_list[5], 1]
+                    except IndexError:
+                        diseases[name] = [line_list[0], '-', 1]
 
     return genes, diseases

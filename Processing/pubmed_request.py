@@ -46,7 +46,8 @@ def make_request(TOR, TAND, date):
 
     term = build_term(TOR, TAND)
     idList = article_search(term, date)
-    annotate_search(idList)
+
+    return annotate_search(idList)
 
 '''
 class PubmedPipeline:
