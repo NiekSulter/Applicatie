@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript", src="{{ url_for('static', filename='scripts/gene_finder.js') }}"></script>
+    <script type="text/javascript", src="{{ url_for('static', filename='scripts/res.js') }}"></script>
+    <link href="https://unpkg.com/@primer/css@^16.0.0/dist/primer.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="UnderlineNav">
+        <div class="UnderlineNav-body" role="tablist">
+            <a href="{{ url_for('index') }}"><button class="UnderlineNav-item" role="tab" type="button" {{ 'aria-selected=true' if request.path == '/' else 'false' }}>Home</button></a>
+            <a  href="{{ url_for('search') }}"><button class="UnderlineNav-item" role="tab" type="button" {{ 'aria-selected=true' if request.path == '/search' else 'false' }}>Search</button></a>
+            <a href="{{ url_for('vis_results') }}"><button class="UnderlineNav-item" role="tab" type="button" {{ 'aria-selected=true' if request.path == '/results' else 'false' }}>Results</button></a>
+            <a href="{{ url_for('history') }}"><button class="UnderlineNav-item" role="tab" type="button" {{ 'aria-selected=true' if request.path == '/history' else 'false' }}>History</button></a>
+        </div>
+    </nav>
+
+    <br>
+
+{% block body %}{% endblock %}
+
+</body>
+</html>

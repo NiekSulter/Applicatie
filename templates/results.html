@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %} Gene finder - Results{% endblock %}
+
+{% block body %}
+
+    <div class="col-6 mx-auto">
+        <h2>Results for uuid: {{ uuid }}</h2>
+    </div>
+
+    <br>
+
+    <div class="clearfix">
+        <div class="col-6 p-6 float-left">
+            <div class="markdown-body">
+
+                <p><b>Gevonden genen in zoekopdracht</b></p>
+
+                <table id="GeneTable">
+                        <tr>
+                            <th>Gene Symbol</th>
+                            <th>Gene id</th>
+                            <th>Count</th>
+                            <th>Article id</th>
+                        </tr>
+                {% for key, value in genes.items() %}
+                        <tr>
+                            <td onclick="highlightWord(this)">{{ key }}</td>
+                            <td onclick="highlightWord(this)">{{ value[1] }}</td>
+                            <td onclick="highlightWord(this)">{{ value[2] }}</td>
+                            <td onclick="highlightWord(this)" id="articleID">{{ value[0] }}</td>
+                        </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="col-6 float-right p-6 align-center">
+            <div class="markdown-body">
+                <p><b>Gevonden diseases in zoekopdracht</b></p>
+                        <table id="DiseaseTable">
+                            <tr>
+                                <th>Disease Name</th>
+                                <th>MESH id</th>
+                                <th>Count</th>
+                                <th>Article id</th>
+                            </tr>
+                        {% for key, value in diseases.items() %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value[1] }}</td>
+                                <td>{{ value[2] }}</td>
+                                <td>{{ value[0] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </table>
+                </div>
+        </div>
+    </div>
+
+{% endblock %}
