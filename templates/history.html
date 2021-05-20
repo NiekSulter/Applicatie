@@ -22,13 +22,15 @@
                 <button class="btn btn-primary input-block" type="submit">Zoeken</button>
             </form>
         </div>
-        <div class="col-3 p-2 pl-7 mx-auto">
+        <div class="d-flex flex-column flex-items-center">
             <br>
             <br>
-{#            <h4 class="p2 pl-7">Your most recent jobs:</h4>#}
+            <h4 class="p2 pt-7 pb-3">Your most recent jobs:</h4>
             <br>
             <ol>
-
+                {% for i in hislis %}
+                <li>{{ i }}</li>
+                {% endfor %}
             </ol>
         </div>
     </div>
