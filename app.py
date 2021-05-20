@@ -1,5 +1,5 @@
 from datetime import timedelta
-from flask import Flask, render_template, url_for, request, redirect, session, flash, get_flashed_messages
+from flask import Flask, render_template, url_for, request, redirect, session, flash, abort
 from Processing import pubmed_request as pr
 from Database.databasemanager import DatabaseManager
 
@@ -36,6 +36,9 @@ def search():
 
 @app.route('/results', methods=['POST', 'GET'])
 def vis_results():
+    cl = request.content_length
+    if cl is not None and cl > 3 * 1024 * 1024:
+        abort(413)
     try:
         genes = session['genes']
         diseases = session['diseases']
