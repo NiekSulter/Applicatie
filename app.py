@@ -36,9 +36,6 @@ def search():
 
 @app.route('/results', methods=['POST', 'GET'])
 def vis_results():
-    cl = request.content_length
-    if cl is not None and cl > 3 * 1024 * 1024:
-        abort(413)
     try:
         genes = session['genes']
         diseases = session['diseases']
