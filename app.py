@@ -37,8 +37,7 @@ def search():
         session['history'] = search_history
         make_session("history", search_history, 60*24*365)
 
-        return redirect(url_for('vis_results', genes=genes, diseases=diseases,
-                                uuid=uuid))
+        return redirect(url_for('vis_results'))
 
     return render_template("search.html")
 
@@ -70,8 +69,7 @@ def history():
         # session['uuid'] = uuid
         make_session("uuid", uuid, 2)
 
-        return redirect(url_for('vis_results', genes=genes, diseases=diseases,
-                                uuid=uuid))
+        return redirect(url_for('vis_results'))
 
     hislis = []
 
