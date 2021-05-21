@@ -4,8 +4,8 @@
 
 {% block body %}
 
-    <div class="">
-        <div class="col-2 p-2 pl-7 mx-auto">
+    <div class="d-flex flex-column flex-items-center">
+        <div class="block p-2">
             <h3>PubMed search</h3>
         </div>
         <div class="col-4 p-2 mx-auto">
@@ -23,13 +23,13 @@
             {% endwith %}
             <form method="post">
                 <div class="input_wrapper">
-                    <label>Ziektebeeld (AND): </label><input class="form-control input-block"  type="text" placeholder="bijv. deafness" name="and" required>
+                    <label>Klinisch kenmerk: (AND): </label><input class="form-control input-block"  type="text" placeholder="bijv. deafness" name="and" required>
                 </div>
                 <button class="btn btn-outline mt-2" id="add_button" type="button">+</button>
                 <br>
                 <br>
                 <div class="input_wrapper_OR">
-                    <label>Ziektebeeld (OR): </label><input class="form-control input-block" type="text" placeholder="bijv. night blindness" name="or">
+                    <label>Klinisch kenmerk: (OR): </label><input class="form-control input-block" type="text" placeholder="bijv. night blindness" name="or">
                 </div>
                 <button class="btn btn-outline mt-2" id="add_button_OR" type="button">+</button>
                 <br>
@@ -37,7 +37,7 @@
                 <label>Zoekdatum vanaf: </label><input class="form-control input-block" type="date" id="datepicker" name="datepicker" required>
                 <br>
                 <br>
-                <label>Exclude genpanel: </label><select class="input-block" id="genpanel_selector" name="genpanels">
+                <label>Exclude genpanel: </label><select class="input-block" id="genpanel_selector" name="genpanels" >
                     <option value="None">None</option>
                 </select>
                 <br>

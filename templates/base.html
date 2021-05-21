@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html id="htmlTag" lang="en" data-color-mode="light" data-dark-theme="light">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
@@ -9,6 +9,7 @@
     <script type="text/javascript", src="{{ url_for('static', filename='scripts/gene_finder.js') }}"></script>
     <script type="text/javascript", src="{{ url_for('static', filename='scripts/res.js') }}"></script>
     <link href="https://unpkg.com/@primer/css@^16.0.0/dist/primer.css" rel="stylesheet" />
+    <link href='https://css.gg/moon.css' rel='stylesheet'>
 </head>
 <body>
     <nav class="UnderlineNav">
@@ -18,6 +19,7 @@
             <a href="{{ url_for('vis_results') }}"><button class="UnderlineNav-item" role="tab" type="button" {{ 'aria-selected=true' if request.path == '/results' else 'false' }}>Results</button></a>
             <a href="{{ url_for('history') }}"><button class="UnderlineNav-item" role="tab" type="button" {{ 'aria-selected=true' if request.path == '/history' else 'false' }}>History</button></a>
         </div>
+        <button class="btn btn-sm btn-outline mr-2" aria-label="Activate dark mode" onclick="checkColorMode()"><i class="gg-moon"></i></button>
     </nav>
 
     <br>
