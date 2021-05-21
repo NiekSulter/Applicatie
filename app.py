@@ -26,7 +26,7 @@ def search():
         genes, diseases, uuid = pr.make_request(TOR, TAND, str(date), email)
         make_session("uuid", uuid, 2)
 
-        if session['history']:
+        if session.get('history'):
             search_history = session['history']
 
         search_history.append(uuid)
@@ -73,7 +73,10 @@ def history():
         return redirect(url_for('vis_results', genes=genes, diseases=diseases,
                                 uuid=uuid))
 
-    hislis = reversed(session['history'])
+    hislis = []
+
+    if session.get('history'):
+        hislis = reversed(session['history'])
 
     return render_template("history.html", hislis=hislis)
 
