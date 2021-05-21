@@ -4,14 +4,14 @@
 
 {% block body %}
 
-    <div class="col-6 mx-auto">
+    <div class="d-flex flex-column flex-items-center">
         <h2>Results for uuid: {{ uuid }}</h2>
     </div>
 
     <br>
 
-    <div class="clearfix">
-        <div class="col-6 p-6 float-left">
+    <div class="d-flex flex-justify-center">
+        <div class="p-4 pr-7">
             <div class="markdown-body">
 
                 <p><b>Gevonden genen in zoekopdracht</b></p>
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div class="col-6 float-right p-6 align-center">
+        <div class="p-4 pl-7">
             <div class="markdown-body">
                 <p><b>Gevonden diseases in zoekopdracht</b></p>
                         <table id="DiseaseTable">
