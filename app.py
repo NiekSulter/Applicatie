@@ -66,7 +66,6 @@ def history():
         dm = DatabaseManager()
         genes, diseases, uuid = dm.retreieve_zoekopdracht(user_input_uuid)
 
-        # session['uuid'] = uuid
         make_session("uuid", uuid, 2)
 
         return redirect(url_for('vis_results'))
