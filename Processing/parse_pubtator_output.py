@@ -8,23 +8,24 @@ def extract_gene(results):
     for line in results:
         if re.match(r'^\d+\t\d+\t\d+\t', line) is not None:
             line_list = line.upper().strip().split('\t')
+            articleid = line_list[0]
             name = line_list[3]
-            anno_type = line_list[4]
-            if anno_type == "GENE":
-                if name in genes.keys():
-                    genes[name][2] += 1
+            annotype = line_list[4]
+            if annotype == "GENE":
+                if articleid in genes.keys() and name in genes[articleid]:
+                    genes[articleid][2] += 1
                 else:
                     try:
-                        genes[name] = [line_list[0], line_list[5], 1]
+                        genes[articleid] = [name, line_list[5], 1]
                     except IndexError:
-                        genes[name] = [line_list[0], '-', 1]
-            elif anno_type == "DISEASE":
-                if name in diseases.keys():
-                    diseases[name][2] += 1
+                        genes[articleid] = [name, '-', 1]
+            elif annotype == "DISEASE":
+                if articleid in diseases.keys() and name in diseases[articleid]:
+                    diseases[articleid][2] += 1
                 else:
                     try:
-                        diseases[name] = [line_list[0], line_list[5], 1]
+                        diseases[articleid] = [name, line_list[5], 1]
                     except IndexError:
-                        diseases[name] = [line_list[0], '-', 1]
+                        diseases[articleid] = [name, '-', 1]
 
     return genes, diseases

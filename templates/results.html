@@ -25,10 +25,10 @@
                         </tr>
                 {% for key, value in genes.items() %}
                         <tr>
-                            <td onclick="highlightWord(this)">{{ key }}</td>
+                            <td onclick="highlightWord(this)">{{ value[0] }}</td>
                             <td onclick="highlightWord(this)">{{ value[1] }}</td>
                             <td onclick="highlightWord(this)">{{ value[2] }}</td>
-                            <td onclick="highlightWord(this)" id="articleID"><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ value[0] }}">{{ value[0] }}</a></td>
+                            <td onclick="highlightWord(this)" id="articleID"><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ key }}">{{ key }}</a></td>
                         </tr>
                 {% endfor %}
                 </table>
@@ -47,10 +47,10 @@
                             </tr>
                         {% for key, value in diseases.items() %}
                             <tr>
-                                <td>{{ key }}</td>
+                                <td>{{ value[0] }}</td>
                                 <td>{{ value[1] }}</td>
                                 <td>{{ value[2] }}</td>
-                                <td><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ value[0] }}">{{ value[0] }}</a></td>
+                                <td><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ key }}">{{ key }}</a></td>
                             </tr>
                         {% endfor %}
                         </table>
