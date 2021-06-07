@@ -38,7 +38,13 @@ def search():
 
         return redirect(url_for('vis_results'))
 
-    return render_template("search.html")
+    dm = DatabaseManager()
+
+    genpanels = dm.retrieve_genpanel_ids()
+
+    dm.close_conn()
+
+    return render_template("search.html", genpanels=genpanels)
 
 
 @app.route('/results', methods=['POST', 'GET'])

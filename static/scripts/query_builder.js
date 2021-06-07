@@ -4,6 +4,8 @@ function getInput(el) {
 
     console.log(input, AON)
 
+    document.getElementById("det_keyword").removeAttribute("open")
+
     getQueryTerm(input, AON)
 }
 
@@ -20,6 +22,8 @@ function setSelectedTerm(el) {
     buttonList.forEach((button) => {button.setAttribute("aria-checked", "false")});
 
     el.setAttribute("aria-checked", "true")
+
+    document.getElementById("det_field").removeAttribute("open")
 }
 
 function getQueryTerm(term, AON) {

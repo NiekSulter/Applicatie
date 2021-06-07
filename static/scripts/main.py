@@ -1,4 +1,5 @@
 import pandas
+from Database.databasemanager import DatabaseManager
 
 
 def read_file(bestand):
@@ -37,7 +38,6 @@ def make_dict(df):
             else:
                 genepanel_dict[panels[i]] = [aliases_dict]
             aliases_dict = {}
-    print(genepanel_dict)
     return genepanel_dict
 
 
@@ -45,9 +45,14 @@ def main():
     bestand = "GenPanelOverzicht_DG-3.1.0_HAN.xlsx"
     df = read_file(bestand)
     genepanel_dict = make_dict(df)
-    #print(aliases_dict)
 
-    print(genepanel_dict)
+    dbm = DatabaseManager()
+
+    dbm.retrieve_genpanel_ids()
+
+    dbm.close_conn()
+
+
 
 
 main()

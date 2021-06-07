@@ -32,5 +32,16 @@ class DatabaseManager:
 
         return genes, diseases, userid
 
+    def insert_genpanels(self, genpanel_dict):
+        for key, value in genpanel_dict.items():
+            self.db.genpanels.insert_one({"_id": key, "genes": value})
+
+    def retrieve_genpanel_ids(self):
+        out = []
+        for i in self.db.genpanels.distinct("_id"):
+            out.append(i)
+
+        return out
+
     def close_conn(self):
         self.client.close()

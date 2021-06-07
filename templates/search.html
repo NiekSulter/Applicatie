@@ -31,7 +31,7 @@
                             <input class="form-control input-block" id="zoekterm" type="text" placeholder="bijv. deafness" name="and" required>
                         </div>
                         <div class="">
-                            <details class="details-reset details-overlay" open>
+                            <details class="dropdown details-reset details-overlay" id="det_field">
                                 <summary class="btn" aria-haspopup="true">
                                    <span id="fieldButtonText">Field</span>
                                 </summary>
@@ -79,7 +79,7 @@
                             </details>
                         </div>
                         <div class="border">
-                            <details class="details-reset details-overlay">
+                            <details class="details-reset details-overlay" id="det_keyword">
                                 <summary class="btn" aria-haspopup="true">
                                     Keyword
                                 </summary>
@@ -110,7 +110,9 @@
                 <br>
                 <br>
                 <label>Exclude genpanel: </label><select class="input-block" id="genpanel_selector" name="genpanels" >
-                    <option value="None">None</option>
+                    {% for i in genpanels %}
+                        <option value="None">{{ i }}</option>
+                    {% endfor %}
                 </select>
                 <br>
                 <br>
