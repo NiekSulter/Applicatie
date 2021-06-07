@@ -19,26 +19,36 @@ def make_dict(df):
         panels = row["GenePanel"].split(";")#regex maken die kijk of er haakjes staan om de ";"
         symbol = row['Symbol_HGNC']
         aliases = row['Aliases']
-        if isinstance(aliases, float):
-            aliases_dict[symbol] = []
+        #if isinstance(aliases, float):
+        #    aliases_dict[symbol] = []
 
-        else:
-            split_aliases = aliases.split("|")
-            aliases_dict[symbol] = split_aliases
-        for i in panels:
-            if i in genepanel_dict.keys():
-                genepanel_dict[i].append(symbol)
+        #else:
+        #    split_aliases = aliases.split("|")
+        #    aliases_dict[symbol] = split_aliases
+        for i in range(len(panels)):
+            if isinstance(aliases, float):
+                aliases_dict[symbol] = []
             else:
-                genepanel_dict[i] = [symbol]
-    return aliases_dict, genepanel_dict
+                split_aliases = aliases.split("|")
+                aliases_dict[symbol] = split_aliases
+
+            if panels[i] in genepanel_dict.keys():
+                genepanel_dict[panels[i]].append(aliases_dict)
+            else:
+                genepanel_dict[panels[i]] = [aliases_dict]
+            aliases_dict = {}
+    print(genepanel_dict)
+    return genepanel_dict
 
 
 def main():
     bestand = "GenPanelOverzicht_DG-3.1.0_HAN.xlsx"
     df = read_file(bestand)
-    aliases_dict, genepanel_dict = make_dict(df)
+    genepanel_dict = make_dict(df)
+    #print(aliases_dict)
 
     print(genepanel_dict)
 
 
 main()
+
