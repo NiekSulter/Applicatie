@@ -19,8 +19,7 @@ def build_term(TOR, TAND):
 def article_search(term, date):
     print(date)
 
-    handle = Entrez.esearch(db="pubmed", term=term, field="title",
-                            mindate=date)
+    handle = Entrez.esearch(db="pubmed", term=term, mindate=date)
     record = Entrez.read(handle)
     handle.close()
 
@@ -46,48 +45,11 @@ def annotate_search(idList):
     return genes, diseases, uuid
 
 
-def make_request(TOR, TAND, date, email):
+def make_request(term, date, email):
     Entrez.email = email
     #Entrez.api_key = NCBI_API_KEY
 
-    term = build_term(TOR, TAND)
     idList = article_search(term, date)
 
     return annotate_search(idList)
 
-'''
-class PubmedPipeline:
-
-    def __init__(self):
-        self.API_email = NCBI_API_MAIL
-        self.API_KEY = NCBI_API_KEY
-
-    def build_term(self, TOR, TAND):
-        term = ""
-        AND = ' AND '.join(TOR)
-        OR = ' OR '.join(TAND)
-
-        term = AND + " OR " + OR
-
-        return term
-
-    def article_search(self, term, date):
-        print(date)
-
-        handle = Entrez.esearch(db="pubmed", term=term, field="title",
-                                mindate=date)
-        record = Entrez.read(handle)
-        handle.close()
-
-        idList = record['IdList']
-        return idList
-
-    def pubtator_annotation(self, idList):
-        ids = ','.join(idList)
-
-        url = f"https://www.ncbi.nlm.nih.gov/research/pubtator-api/publications" \
-              f"/export/pubtator?pmids={ids}&concepts=gene"
-        result = requests.get(url)
-
-        print(result.text)
-'''

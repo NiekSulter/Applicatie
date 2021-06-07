@@ -16,14 +16,13 @@ def index():
 def search():
 
     if request.method == 'POST':
-        TOR = request.form.getlist('and')
-        TAND = request.form.getlist('or')
+        term = request.form['queryBox']
         date = request.form['datepicker']
         genpanel = request.form['genpanels']
         email = request.form['email']
         search_history = []
 
-        genes, diseases, uuid = pr.make_request(TOR, TAND, str(date), email)
+        genes, diseases, uuid = pr.make_request(term, str(date), email)
         make_session("uuid", uuid, 2)
 
         if session.get('history'):

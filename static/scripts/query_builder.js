@@ -1,14 +1,20 @@
 function getInput(el) {
     let input = document.getElementById("zoekterm").value
-    let keyword = el.value
+    let AON = el.value
 
-    console.log(input, keyword)
+    console.log(input, AON)
+
+    getQueryTerm(input, AON)
+}
+
+function getButtonList() {
+    let buttonDiv = document.getElementById("selectmenu")
+    return Array.from(buttonDiv.getElementsByTagName("button"))
 }
 
 function setSelectedTerm(el) {
     let buttonSpan = document.getElementById("fieldButtonText")
-    let buttonDiv = document.getElementById("selectmenu")
-    let buttonList = Array.from(buttonDiv.getElementsByTagName("button"))
+    let buttonList = getButtonList()
     buttonSpan.innerHTML = el.innerText
 
     buttonList.forEach((button) => {button.setAttribute("aria-checked", "false")});
@@ -16,25 +22,25 @@ function setSelectedTerm(el) {
     el.setAttribute("aria-checked", "true")
 }
 
-function getQueryTerm(keyword, term) {
+function getQueryTerm(term, AON) {
     let queryBox = document.getElementById("queryBox")
-    let cook = decodeURIComponent(document.cookie)
-    let lastKeyword
+    let buttonList = getButtonList()
+    let keyword
 
-    if(cook) {
-        lastKeyword = cook.split("=")[1]
+    buttonList.forEach((button) => {(button.getAttribute("aria-checked") === "true") ? keyword = button.value : null})
+
+    let termFormatted
+
+    if (keyword === "All fields") {
+        termFormatted = `${term}`
+    } else {
+        termFormatted = `${term}[${keyword}]`
     }
 
-    switch (keyword) {
-        case "AND":
-
-            break;
-        case "OR":
-
-            break;
-        case "NOT":
-
-            break;
+    if(queryBox.value.length !== 0) {
+        queryBox.value = "(" + queryBox.value + ")" + ` ${AON} ` + `(${termFormatted})`
+    } else {
+        queryBox.value = termFormatted
     }
 
 }

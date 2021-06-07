@@ -1,5 +1,6 @@
 import pandas
 
+
 def read_file(bestand):
     df = pandas.read_excel(bestand, dtype=str)
     df = df[df.columns[df.columns.isin(['Symbol_HGNC', 'Aliases', 'GenePanels_Symbol', 'GenePanel', 'GenePanelCount'])]]
@@ -36,6 +37,8 @@ def main():
     bestand = "GenPanelOverzicht_DG-3.1.0_HAN.xlsx"
     df = read_file(bestand)
     aliases_dict, genepanel_dict = make_dict(df)
+
+    print(genepanel_dict)
 
 
 main()
