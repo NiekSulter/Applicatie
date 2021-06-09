@@ -44,7 +44,7 @@
                         </div>
                     </details>
                 </div>
-                    <details class="dropdown details-reset details-overlay col-3" id="det_field">
+                    <details class="details-reset details-overlay col-1" id="det_field">
                         <summary class="btn" aria-haspopup="true">
                            <span id="fieldButtonText">Field</span>
                         </summary>
@@ -101,8 +101,9 @@
                 <br>
                 <br>
                 <label>Exclude genpanel: </label><select class="input-block" id="genpanel_selector" name="genpanels" >
+                        <option value="None">None</option>
                     {% for i in genpanels %}
-                        <option value="None">{{ i }}</option>
+                        <option value="{{ i }}">{{ i }}</option>
                     {% endfor %}
                 </select>
                 <br>

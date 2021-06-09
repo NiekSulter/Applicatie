@@ -52,10 +52,10 @@ def vis_results():
     try:
         uuid = session['uuid']
         dm = DatabaseManager()
-        genes, diseases, uuiddb = dm.retreieve_zoekopdracht(uuid)
+        genes, diseases, uuiddb, query = dm.retreieve_zoekopdracht(uuid)
 
         return render_template("results.html", genes=genes, diseases=diseases,
-                               uuid=uuid)
+                               uuid=uuid, query=query)
     except KeyError:
         flash("Voer eerst een zoekopdracht uit of haal deze een op uit de "
               "database!")

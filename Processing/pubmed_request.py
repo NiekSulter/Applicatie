@@ -4,16 +4,16 @@ from Processing import parse_pubtator_output
 from Database.databasemanager import DatabaseManager
 
 
-def build_term(TOR, TAND):
-    term = ""
-    AND = ' AND '.join(TOR)
-    OR = ' OR '.join(TAND)
-
-    term = AND + " OR " + OR
-
-    print(term)
-
-    return term
+# def build_term(TOR, TAND):
+#     term = ""
+#     AND = ' AND '.join(TOR)
+#     OR = ' OR '.join(TAND)
+#
+#     term = AND + " OR " + OR
+#
+#     print(term)
+#
+#     return term
 
 
 def article_search(term, date):
@@ -27,7 +27,7 @@ def article_search(term, date):
     return idList
 
 
-def annotate_search(idList):
+def annotate_search(idList, term):
     ids = ','.join(idList)
 
     url = f"https://www.ncbi.nlm.nih.gov/research/pubtator-api/publications" \
@@ -38,7 +38,7 @@ def annotate_search(idList):
 
     dm = DatabaseManager()
 
-    uuid = dm.insert_zoekopdracht(genes, diseases)
+    uuid = dm.insert_zoekopdracht(genes, diseases, term)
 
     dm.close_conn()
 
@@ -51,5 +51,5 @@ def make_request(term, date, email):
 
     idList = article_search(term, date)
 
-    return annotate_search(idList)
+    return annotate_search(idList, term)
 

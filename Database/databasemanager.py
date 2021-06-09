@@ -12,11 +12,11 @@ class DatabaseManager:
             f"mongodb+srv://{usr}:{pwd}@cluster0.thgnd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
         self.db = self.client.Course8_test
 
-    def insert_zoekopdracht(self, genes, diseases):
+    def insert_zoekopdracht(self, genes, diseases, query):
         collection = self.db.Zoekopdrachten
 
         uniqueid = str(uuid.uuid1())
-        d = {"_id": uniqueid, "res": [genes, diseases]}
+        d = {"_id": uniqueid, "res": [genes, diseases], "query": query}
 
         self.db.collection.insert_one(d)
 
@@ -27,10 +27,13 @@ class DatabaseManager:
 
         out = self.db.collection.find_one({"_id": userid})
 
+        print(out)
+
         genes = out['res'][0]
         diseases = out['res'][1]
+        query = out['query']
 
-        return genes, diseases, userid
+        return genes, diseases, userid, query
 
     def insert_genpanels(self, genpanel_dict):
         for key, value in genpanel_dict.items():

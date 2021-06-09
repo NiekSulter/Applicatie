@@ -31,8 +31,6 @@ def make_dict(df):
 
         panels = line.split(";")#regex maken die kijk of er haakjes staan om de ";"
 
-        # print(panels)
-
         symbol = row['Symbol_HGNC']
         aliases = row['Aliases']
         #if isinstance(aliases, float):
