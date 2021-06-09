@@ -22,7 +22,7 @@ def search():
         email = request.form['email']
         search_history = []
 
-        genes, diseases, uuid = pr.make_request(term, str(date), email)
+        uuid = pr.make_request(term, str(date), email)
         make_session("uuid", uuid, 2)
 
         if session.get('history'):
@@ -69,7 +69,7 @@ def history():
         user_input_uuid = request.form['uuid']
 
         dm = DatabaseManager()
-        genes, diseases, uuid = dm.retreieve_zoekopdracht(user_input_uuid)
+        genes, diseases, uuid, query = dm.retreieve_zoekopdracht(user_input_uuid)
 
         make_session("uuid", uuid, 2)
 

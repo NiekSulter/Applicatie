@@ -4,21 +4,13 @@ from Processing import parse_pubtator_output
 from Database.databasemanager import DatabaseManager
 
 
-# def build_term(TOR, TAND):
-#     term = ""
-#     AND = ' AND '.join(TOR)
-#     OR = ' OR '.join(TAND)
-#
-#     term = AND + " OR " + OR
-#
-#     print(term)
-#
-#     return term
-
-
 def article_search(term, date):
-    print(date)
-
+    """
+    functie om artikelen van pubmed op te halen.
+    :param term: de zoekterm die door de gebruiker is ingevoerd op de website
+    :param date: de datum die door de gebruiker is ingevoerd op de website
+    :return: een lijst met de pubmed id's van alle gevonden artikelen
+    """
     handle = Entrez.esearch(db="pubmed", term=term, mindate=date)
     record = Entrez.read(handle)
     handle.close()
@@ -27,7 +19,13 @@ def article_search(term, date):
     return idList
 
 
-def annotate_search(idList, term):
+def annotate_search(idList):
+    """
+    functie om de gevonden artikelen op pubmet te annoteren m.b.v. de pubtator
+    api
+    :param idList: een lijst met de pubmed id's van alle gevonden artikelen
+    :return: twee dictionaries, een met genen en een met diseases.
+    """
     ids = ','.join(idList)
 
     url = f"https://www.ncbi.nlm.nih.gov/research/pubtator-api/publications" \
@@ -36,20 +34,40 @@ def annotate_search(idList, term):
 
     genes, diseases = parse_pubtator_output.extract_gene(result.text)
 
+    return genes, diseases
+
+
+def database_insert(genes, diseases, term):
+    """
+    functie voor het inserten van een zoekopdracht in de database
+    :param genes: dictionary met gevonden genen
+    :param diseases: dictionary met gevonden diseases
+    :param term: de zoekterm die door de gebruiker is ingevoerd op de website
+    :return: een universally unique identifier die de zoekopdracht
+    identificeert
+    """
     dm = DatabaseManager()
 
     uuid = dm.insert_zoekopdracht(genes, diseases, term)
 
     dm.close_conn()
 
-    return genes, diseases, uuid
+    return uuid
 
 
 def make_request(term, date, email):
+    """
+    functie om de request pipeline aan te sturen
+    :param term: de zoekterm die door de gebruiker is ingevoerd op de website
+    :param date: de datum die door de gebruiker is ingevoerd op de website
+    :param email: de email die door de gebruiker is ingevoerd op de website
+    :return: een universally unique identifier die de zoekopdracht
+    identificeert
+    """
     Entrez.email = email
-    #Entrez.api_key = NCBI_API_KEY
 
     idList = article_search(term, date)
 
-    return annotate_search(idList, term)
+    genes, diseases = annotate_search(idList)
 
+    return database_insert(genes, diseases, term)
