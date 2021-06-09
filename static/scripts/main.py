@@ -1,4 +1,5 @@
 import pandas
+import re
 from Database.databasemanager import DatabaseManager
 
 
@@ -17,7 +18,21 @@ def make_dict(df):
     genepanel_dict = {}
     aliases_dict = {}
     for index, row in df.iterrows():
-        panels = row["GenePanel"].split(";")#regex maken die kijk of er haakjes staan om de ";"
+
+        line = row["GenePanel"]
+
+        m = re.findall("(?<=\().+?(?=\))", line)
+
+        # [line.replace(";", ",") for g in m.groups() if ";" in g]
+
+        for x in m:
+            line = line.replace(x, x.replace(";", ","))
+
+
+        panels = line.split(";")#regex maken die kijk of er haakjes staan om de ";"
+
+        # print(panels)
+
         symbol = row['Symbol_HGNC']
         aliases = row['Aliases']
         #if isinstance(aliases, float):
@@ -48,7 +63,7 @@ def main():
 
     dbm = DatabaseManager()
 
-    dbm.retrieve_genpanel_ids()
+    dbm.insert_genpanels(genepanel_dict)
 
     dbm.close_conn()
 
