@@ -21,8 +21,7 @@ def search():
         genpanel = request.form['genpanels']
         email = request.form['email']
         search_history = []
-
-        uuid = pr.make_request(term, str(date), email, genpanel)
+        uuid = pr.make_request(term, str(date), email)
         make_session("uuid", uuid, 2)
 
         if session.get('history'):

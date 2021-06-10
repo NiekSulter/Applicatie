@@ -19,27 +19,29 @@ def extract_gene(results):
             name = line_list[3]
             annotype = line_list[4]
             if annotype == "GENE":
-                if genpanel != "None":
-                    for key in genpanel:
-                        if name in key or name in list(key.values())[0]:
-                            filterlist.append(name)
-                if name in filterlist:
-                    continue
-                elif articleid in genes.keys() and name in genes[articleid]:
-                    genes[articleid][2] += 1
-                else:
-                    try:
-                        print(name, "toegevoegd")
-                        genes[articleid] = [name, line_list[5], 1]
-                    except IndexError:
-                        genes[articleid] = [name, '-', 1]
+                # if genpanel != "None":
+                #     for key in genpanel:
+                #         if name in key or name in list(key.values())[0]:
+                #             filterlist.append(name)
+                # if name in filterlist:
+                #     continue
+                if articleid not in genes.keys():
+                    genes[articleid] = {}
+                    genes[articleid][name] = [name, line_list[5], 1]
+                elif articleid in genes.keys():
+                    if name in genes[articleid].keys():
+                        genes[articleid][name][2] += 1
+                    else:
+                        genes[articleid][name] = [name, line_list[5], 1]
             elif annotype == "DISEASE":
-                if articleid in diseases.keys() and name in diseases[articleid]:
-                    diseases[articleid][2] += 1
-                else:
-                    try:
-                        diseases[articleid] = [name, line_list[5], 1]
-                    except IndexError:
-                        diseases[articleid] = [name, '-', 1]
-
+                if articleid not in diseases.keys():
+                    diseases[articleid] = {}
+                    diseases[articleid][name] = [name, line_list[5], 1]
+                elif articleid in diseases.keys():
+                    if name in diseases[articleid].keys():
+                        diseases[articleid][name][2] += 1
+                    else:
+                        diseases[articleid][name] = [name, line_list[5], 1]
+    print(genes)
+    print(diseases)
     return genes, diseases
