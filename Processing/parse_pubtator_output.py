@@ -13,7 +13,6 @@ def extract_gene(results):
     results_it = iter(results)
     for line in results_it:
         filterlist = []
-        print(line)
         if re.match(r'^\d+\t\d+\t\d+\t', line) is not None:
             line_list = line.upper().strip().split('\t')
             articleid = line_list[0]
