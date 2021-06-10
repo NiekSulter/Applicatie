@@ -4,18 +4,6 @@ from Processing import parse_pubtator_output
 from Database.databasemanager import DatabaseManager
 
 
-# def build_term(TOR, TAND):
-#     term = ""
-#     AND = ' AND '.join(TOR)
-#     OR = ' OR '.join(TAND)
-#
-#     term = AND + " OR " + OR
-#
-#     print(term)
-#
-#     return term
-
-
 def article_search(term, date):
     """
     Makes an entrez search using search terms and a date.
@@ -48,13 +36,19 @@ def annotate_search(idList, term):
 
     genes, diseases = parse_pubtator_output.extract_gene(result.text)
 
+    return genes, diseases
+
+
+
+def database_insert(genes, diseases, term):
+
     dm = DatabaseManager()
 
     uuid = dm.insert_zoekopdracht(genes, diseases, term)
 
     dm.close_conn()
 
-    return genes, diseases, uuid
+    return uuid
 
 
 def make_request(term, date, email):
@@ -70,5 +64,7 @@ def make_request(term, date, email):
 
     idList = article_search(term, date)
 
-    return annotate_search(idList, term)
+    genes, diseases = annotate_search(idList, term)
+
+    return database_insert(genes, diseases, term)
 

@@ -23,8 +23,6 @@ def make_dict(df):
 
         m = re.findall("(?<=\().+?(?=\))", line)
 
-        # [line.replace(";", ",") for g in m.groups() if ";" in g]
-
         for x in m:
             line = line.replace(x, x.replace(";", ","))
 

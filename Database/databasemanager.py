@@ -5,12 +5,12 @@ from Processing import variables
 
 class DatabaseManager:
     """
-    class om de interacties met de database te regelen
+    Management class for database interactions
     """
 
     def __init__(self):
         """
-        aanmaken van de connectie met de database
+        Starting database connection
         """
         usr = variables.MONGO_ATLAS_USER
         pwd = variables.MONGO_ATLAS_PASS
@@ -20,20 +20,21 @@ class DatabaseManager:
 
     def insert_zoekopdracht(self, genes, diseases, query):
         """
-        inserten van een zoekopdracht in de database
-        :param genes: dictionary met genen
-        :param diseases: dictionary met diseases
-        :param query: de door de gebruiker ingevoerde zoek query
-        :return: een universally unique identifier die de zoekopdracht
-        identificeert
+        inserting a search into the database
+        :param genes: dictionary with genes
+        :param diseases: dictionary with diseases
+        :param query: the user submitted query
+        :return: universally unique identifier which identifies the search
+        query.
         """
         collection = self.db.Zoekopdrachten
 
-        # uuid wordt gegenereerd
+        # generating the uuid
         uniqueid = str(uuid.uuid1())
 
-        # de twee meegegeven dicts worden samen met de query en het uuid in een
-        # nieuwe dict gestopt, deze wordt geinsert in de database.
+        # the genes and diseases dictionaries are combined into a new dict
+        # along with the uuid and search query. This datastructure
+        # encapsulates a single search
         d = {"_id": uniqueid, "res": [genes, diseases], "query": query}
 
         self.db.collection.insert_one(d)
@@ -42,13 +43,18 @@ class DatabaseManager:
 
     def retreieve_zoekopdracht(self, userid):
         """
-        functie om een zoekopdracht op te halen uit de database
-        :param userid: een universally unique identifier die de zoekopdracht
-        identificeert
-        :return: de onderdelen van de zoekopdracht, twee dicts met de genes
-        & diseases, het uuid van de zoekopdracht en de gebruikte query
+        function for retrieving a single search from the database
+        :param userid: universally unique identifier which identifies a single
+        search
+        :return: the two dictionaries with genes & diseases,
+        the uuid and the search query
         """
+
+        print("USERID", userid)
+
         out = self.db.collection.find_one({"_id": userid})
+
+        print("OUT", out)
 
         genes = out['res'][0]
         diseases = out['res'][1]
@@ -58,9 +64,8 @@ class DatabaseManager:
 
     def insert_genpanels(self, genpanel_dict):
         """
-        functie om de genpanels uit het genpanel bestand te inserten
-        in de database
-        :param genpanel_dict: een dictionary met de genpanels
+        function for inserting the genpanels into the database
+        :param genpanel_dict: a dictionary with the genpanels
         :return: None
         """
         for key, value in genpanel_dict.items():
@@ -70,7 +75,10 @@ class DatabaseManager:
         """
         functie om de genpanel namen op te halen uit de database, met deze
         functie worden alleen de namen opgehaald voor de website.
-        :return: een lijst met de namen van de genpanels
+
+        function for retrieving the genpanel names, to keep the loading times
+        as low as possible only the names are retrieved
+        :return: a list with the genpanel names
         """
         out = []
         for i in self.db.genpanels.distinct("_id"):
@@ -80,8 +88,8 @@ class DatabaseManager:
 
     def retrieve_genpanel(self, gp):
         """
-        functie om de genpanel namen op te halen uit de database
-        :return: een lijst met de genpanels
+        function to retrieve a single complete genpanel from the database
+        :return: the user selected genpanel
         """
         out = self.db.genpanels.find_one({"_id": gp})
 
@@ -91,7 +99,7 @@ class DatabaseManager:
 
     def close_conn(self):
         """
-        functie om de connectie met de database te sluiten
+        function to close the database connection
         :return: None
         """
         self.client.close()

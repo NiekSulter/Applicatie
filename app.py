@@ -9,12 +9,20 @@ app.config['SECRET_KEY'] = "DEVKEYCHANGEPLEASE"
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    """
+    Static home page with instructions for using the application
+    :return: home.html
+    """
     return render_template("home.html")
 
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
-
+    """
+    GET: static page where the user can build a search query
+    POST:
+    :return:
+    """
     if request.method == 'POST':
         term = request.form['queryBox']
         date = request.form['datepicker']
