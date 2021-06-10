@@ -72,10 +72,10 @@
                         {% for articleid, dict in diseases.items() %}
                             {% for diseasename, values in diseases[articleid].items() %}
                             <tr>
-                                <td>{{ values[0] }}</td>
-                                <td>{{ values[1] }}</td>
-                                <td>{{ values[2] }}</td>
-                                <td><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ articleid }}">{{ articleid }}</a></td>
+                                <td onclick="highlightWord(this)">{{ values[0] }}</td>
+                                <td onclick="highlightWord(this)">{{ values[1] }}</td>
+                                <td onclick="highlightWord(this)">{{ values[2] }}</td>
+                                <td onclick="highlightWord(this)"><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ articleid }}">{{ articleid }}</a></td>
                             </tr>
                             {% endfor %}
                         {% endfor %}

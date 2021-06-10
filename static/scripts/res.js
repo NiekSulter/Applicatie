@@ -1,14 +1,23 @@
 function highlightWord(el) {
 
-    // var id = clickedelement.getElementById("articleID")
-
     var pel = el.parentElement
 
-    clearTables()
+    var pel2 = pel.parentElement
+
+    var tableName = ""
+
+    if (pel2.innerText.includes("Gene")) {
+        tableName = 'DiseaseTable'
+    } else {
+        tableName = 'GeneTable'
+    }
+
+    clearTables('GeneTable')
+    clearTables('DiseaseTable')
 
     var cel = pel.children
     var id = cel[3].innerHTML
-    var table = document.getElementById('DiseaseTable')
+    var table = document.getElementById(tableName)
 
     let element = document.getElementById("htmlTag")
     let currentStatus = element.getAttribute("data-color-mode")
@@ -36,8 +45,8 @@ function highlightWord(el) {
     }
 }
 
-function clearTables() {
-    var table1 = document.getElementById('GeneTable')
+function clearTables(tableName) {
+    var table1 = document.getElementById(tableName)
 
     for (var r = 0, n = table1.rows.length; r < n; r++) {
         let row = table1.rows[r]
@@ -45,6 +54,8 @@ function clearTables() {
         row.style.backgroundColor = ""
     }
 }
+
+// DARK & LIGHT MODE CODE
 
 function checkColorMode() {
     let element = document.getElementById("htmlTag")

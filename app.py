@@ -21,8 +21,11 @@ def index():
 def search():
     """
     GET: static page where the user can build a search query
-    POST:
-    :return:
+    POST: retrieves data from form, and calls the make_request function.
+    Afterwords a session with the search UUID is created. If the user has a
+    history session the current search gets added to it. The user is
+    redirected to the results page.
+    :return: search.html and a genpanel names list
     """
     if request.method == 'POST':
         term = request.form['queryBox']
@@ -46,6 +49,8 @@ def search():
 
         return redirect(url_for('vis_results'))
 
+    # Retrieving the genpanel names from the database
+
     dm = DatabaseManager()
 
     genpanels = dm.retrieve_genpanel_ids()
@@ -57,6 +62,13 @@ def search():
 
 @app.route('/results', methods=['POST', 'GET'])
 def vis_results():
+    """
+    If this page gets loaded without an active session the user gets
+    redirected to the search page, a flash message appears instructing the
+    user to create a search first. If the user has an active session they
+    will be shown the results of their search.
+    :return: results page with all the result data.
+    """
     try:
         uuid = session['uuid']
         dm = DatabaseManager()
@@ -67,12 +79,18 @@ def vis_results():
                                uuid=uuid, query=query, genpanel=genpanel,
                                date=date)
     except KeyError:
-        flash("Please run a search or retrieve one from the archived searches before visiting this page!")
+        flash("Please run a search or retrieve one from the archived "
+              "searches before visiting this page!")
         return redirect(url_for('search'))
 
 
 @app.route('/history', methods=['POST', 'GET'])
 def history():
+    """
+    Gets the UUID of a previous search and redirects the user to the
+    results page, showing the results of the aforementioned search.
+    :return: redirect to the vis_results function.
+    """
 
     if request.method == 'POST':
         user_input_uuid = request.form['uuid']
@@ -94,6 +112,13 @@ def history():
 
 
 def make_session(name, value, expiry):
+    """
+    function to make a session in the user's browser.
+    :param name: name of the session
+    :param value: the value of the session
+    :param expiry: the expiry time of the session
+    :return: None
+    """
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=expiry)
     session[name] = value
 
