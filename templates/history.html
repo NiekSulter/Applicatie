@@ -1,32 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %} Gene finder - History {% endblock %}
+{% block title %} MEDmine - History {% endblock %}
 
 {% block body %}
 
     <div class="d-flex flex-column flex-items-center">
         <div class="block p-2">
-            <h3>Archief doorzoeken</h3>
+            <h3>Search history</h3>
         </div>
         <div class="block p-2">
-            <p>Via deze pagina zijn gearchiveerde zoekopdrachten op te halen.</p>
+            <p>Enter a UUID to find an archived search</p>
         </div>
         <div class="col-4 p-2 mx-auto">
             <form method="post">
                 <label>UUID: </label><input class="form-control input-block" type="text" name="uuid" required>
                 <br>
                 <br>
-                <label>E-mail: </label><input class="form-control input-block" type="email" name="email" aria-label="Disabled input" disabled>
-                <br>
-                <br>
-                <button class="btn btn-primary input-block" type="submit">Zoeken</button>
+                <button class="btn btn-primary input-block" type="submit">Search</button>
             </form>
         </div>
     {% if hislis %}
         <div class="d-flex flex-column flex-items-center">
             <br>
             <br>
-            <h4 class="p2 pt-7 pb-3">Laatst uitgevoerde zoekopdrachten:</h4>
+            <h4 class="p2 pt-7 pb-3">Most recent searches:</h4>
             <br>
             <ol>
                 {% for i in hislis %}

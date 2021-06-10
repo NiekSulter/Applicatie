@@ -1,27 +1,66 @@
 {% extends "base.html" %}
 
-{% block title %} Gene finder {% endblock %}
+{% block title %} MEDmine {% endblock %}
 
 {% block body %}
 
-    <p>Homepage of </p>
-    <p>This app is used to find genes that are fairly new and aren't a part of Radboud's genpanels yet.</p>
-    <p>How to search for results:<br>
-    1. Make a query to search your desired results with.<br>
-    2. Select The field you want to search.<br>
-    3. Add to the query by entering search terms to the textbox, use either, 'AND', 'OR' or 'NOT' to <br>
-    4. Enter a date to find only articles published since the date.<br>
-    5. Exclude genpanels if desired.<br>
-    6. Enter email, to easily access results.<br>
-    <p> How to interpret results:<br>
-        1. On the top of page a UUID will be displayed, with this you'll be able to find your results again.<br>
-        2. Under the UUID your search query will be displayed.<br>
-    3. The left column display newly found genes, together with their gene id, how often they're found in a article,
-        and the article ID of the article they're found in.<br>
-    4. The right column will display the disease name, toghether with their MESH id, how often they're found in
-        a article and the article id of the article they're found in.<br>
-    5. You can click on either the genes or diseases to highlight the ones found in the same article</p>
-    <p> How to use history:<br>
-    1. Use either the UUID or your mail to access your results<br>
-    2. You'll be send back to the results page with your old results<br>
+
+
+    <div class="d-flex flex-column flex-items-center pt-5">
+        <div class="markdown-body">
+            <h1>MEDmine</h1>
+
+            <p>This app is used to find genes that are fairly new and aren't a part of Radboud's genpanels yet.</p>
+
+            <h3>Using the search feature:</h3>
+
+            <ol>
+                <li>Enter your desired search term to the term field.</li>
+                <li>Select the field you want to search.</li>
+                <li>Add to the query by selecting one of the three keywords: 'AND', 'OR' or 'NOT'.</li>
+                <li>Enter a date to find only articles published since the date.</li>
+                <li>Exclude a genpanels if desired.</li>
+                <li>Enter your email.</li>
+                <li>Click the Search button.</li>
+            </ol>
+
+            <p>Your search will now commence, if there is a sizable amount of found articles this could take a minute or two. </p>
+            <p class="color-text-warning">Make sure to keep the browser window open!</p>
+
+            <hr>
+
+            <h3>How to interpret the results:</h3>
+
+            <ol>
+                <li>On the top of page a UUID will be displayed, with this UUID you'll be able to find your results again.</li>
+                <li>Beneath the UUID you will find the query used for your search, the selected genpanel and the selected date.</li>
+                <li>Underneath the search information, you will be able to see your results.
+                    <ul>
+                        <li>The left column displays newly found genes, together with their gene id, how often they're found in an article,
+                            and the article ID of the article they were found in.</li>
+                        <li>The right column will display the disease name, together with their MESH id, how often they're found in
+                            an article and the article id of the article they're found in.</li>
+                    </ul>
+                </li>
+                <li>You can click on either the genes or diseases to highlight the ones found in the same article.</li>
+            </ol>
+
+            <hr>
+
+            <h3>How to use the history feature:</h3>
+            <ol>
+                <li>Enter your UUID to find your results.</li>
+                <li>You will be send back to the results page which will show the results corresponding to the submitted UUID.</li>
+            </ol>
+
+            <p class="color-text-link">Underneath the search button you will find the UUIDs of your five most recent searches.</p>
+
+            <hr>
+
+            <h3>About:</h3>
+
+            <p>This app was designed, developed and published by Karsten Blok, Yuri Wit and Niek Sülter</p>
+
+        </div>
+    </div>
 {% endblock %}

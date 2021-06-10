@@ -1,5 +1,6 @@
 from datetime import timedelta
-from flask import Flask, render_template, url_for, request, redirect, session, flash, abort, make_response
+from flask import Flask, render_template, url_for, request, redirect, \
+    session, flash, abort, make_response
 from Processing import pubmed_request as pr
 from Database.databasemanager import DatabaseManager
 
@@ -29,7 +30,7 @@ def search():
         genpanel = request.form['genpanels']
         email = request.form['email']
         search_history = []
-        uuid = pr.make_request(term, str(date), email)
+        uuid = pr.make_request(term, str(date), email, genpanel)
         make_session("uuid", uuid, 2)
 
         if session.get('history'):
@@ -59,13 +60,14 @@ def vis_results():
     try:
         uuid = session['uuid']
         dm = DatabaseManager()
-        genes, diseases, uuiddb, query = dm.retreieve_zoekopdracht(uuid)
+        genes, diseases, uuiddb, query, genpanel, date \
+            = dm.retreieve_zoekopdracht(uuid)
 
         return render_template("results.html", genes=genes, diseases=diseases,
-                               uuid=uuid, query=query)
+                               uuid=uuid, query=query, genpanel=genpanel,
+                               date=date)
     except KeyError:
-        flash("Voer eerst een zoekopdracht uit of haal deze een op uit de "
-              "database!")
+        flash("Please run a search or retrieve one from the archived searches before visiting this page!")
         return redirect(url_for('search'))
 
 
@@ -76,7 +78,8 @@ def history():
         user_input_uuid = request.form['uuid']
 
         dm = DatabaseManager()
-        genes, diseases, uuid, query = dm.retreieve_zoekopdracht(user_input_uuid)
+        genes, diseases, uuid, query, genpanel, date =\
+            dm.retreieve_zoekopdracht(user_input_uuid)
 
         make_session("uuid", uuid, 2)
 

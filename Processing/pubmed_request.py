@@ -20,7 +20,7 @@ def article_search(term, date):
     return idList
 
 
-def annotate_search(idList, term):
+def annotate_search(idList, genpanel):
     """
     Makes a search request using the pubtator api, then extracts and formats the results.
     :param idList:
@@ -33,23 +33,52 @@ def annotate_search(idList, term):
           f"/export/pubtator?pmids={ids}&concepts=gene,disease"
     result = requests.get(url)
 
-    genes, diseases = parse_pubtator_output.extract_gene(result.text)
+    genes, diseases = parse_pubtator_output.extract_gene(result.text, genpanel)
 
     return genes, diseases
 
 
-def database_insert(genes, diseases, term):
+def database_insert(genes, diseases, term, genpanel, date):
+    """
+    Makes a DatabaseManager instance to insert the search into the database.
+    :param genes: dictionary with genes
+    :param diseases: dictionary with diseases
+    :param term: search query
+    :return: universally unique identifier which identifies the search
+        query.
+    """
 
     dm = DatabaseManager()
 
-    uuid = dm.insert_zoekopdracht(genes, diseases, term)
+    uuid = dm.insert_zoekopdracht(genes, diseases, term, genpanel, date)
 
     dm.close_conn()
 
     return uuid
 
 
-def make_request(term, date, email):
+def get_panel(genpanel):
+    """
+    If the user selected a genpanel to exclude in the search, this function
+    will retrieve aforementioned genpanel from the database.
+    :param genpanel: user selected genpanel
+    :return: user selected genpanel OR None if no genpanel was selected
+    """
+    if genpanel != "None":
+        dm = DatabaseManager()
+
+        gp = dm.retrieve_genpanel(genpanel)
+
+        dm.close_conn()
+
+        return gp
+
+    else:
+
+        return genpanel
+
+
+def make_request(term, date, email, genpanel):
     """
     Entry point of the script, calls functions that do the actual request
     :param term: search terms given by the user
@@ -62,7 +91,9 @@ def make_request(term, date, email):
 
     idList = article_search(term, date)
 
-    genes, diseases = annotate_search(idList, term)
+    gp = get_panel(genpanel)
 
-    return database_insert(genes, diseases, term)
+    genes, diseases = annotate_search(idList, gp)
+
+    return database_insert(genes, diseases, term, genpanel, date)
 

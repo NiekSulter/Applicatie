@@ -18,7 +18,7 @@ class DatabaseManager:
             f"mongodb+srv://{usr}:{pwd}@cluster0.thgnd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
         self.db = self.client.Course8_test
 
-    def insert_zoekopdracht(self, genes, diseases, query):
+    def insert_zoekopdracht(self, genes, diseases, query, genpanel, date):
         """
         inserting a search into the database
         :param genes: dictionary with genes
@@ -35,7 +35,8 @@ class DatabaseManager:
         # the genes and diseases dictionaries are combined into a new dict
         # along with the uuid and search query. This datastructure
         # encapsulates a single search
-        d = {"_id": uniqueid, "res": [genes, diseases], "query": query}
+        d = {"_id": uniqueid, "res": [genes, diseases], "query": query,
+             "genpanel": genpanel, "date": date}
 
         self.db.collection.insert_one(d)
 
@@ -49,14 +50,15 @@ class DatabaseManager:
         :return: the two dictionaries with genes & diseases,
         the uuid and the search query
         """
-
         out = self.db.collection.find_one({"_id": userid})
 
         genes = out['res'][0]
         diseases = out['res'][1]
         query = out['query']
+        genpanel = out['genpanel']
+        date = out['date']
 
-        return genes, diseases, userid, query
+        return genes, diseases, userid, query, genpanel, date
 
     def insert_genpanels(self, genpanel_dict):
         """
