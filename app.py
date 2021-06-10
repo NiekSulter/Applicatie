@@ -9,21 +9,27 @@ app.config['SECRET_KEY'] = "DEVKEYCHANGEPLEASE"
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    """
+    Static home page with instructions for using the application
+    :return: home.html
+    """
     return render_template("home.html")
 
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
-
+    """
+    GET: static page where the user can build a search query
+    POST:
+    :return:
+    """
     if request.method == 'POST':
-        TOR = request.form.getlist('and')
-        TAND = request.form.getlist('or')
+        term = request.form['queryBox']
         date = request.form['datepicker']
         genpanel = request.form['genpanels']
         email = request.form['email']
         search_history = []
-
-        genes, diseases, uuid = pr.make_request(TOR, TAND, str(date), email)
+        uuid = pr.make_request(term, str(date), email)
         make_session("uuid", uuid, 2)
 
         if session.get('history'):
@@ -39,7 +45,13 @@ def search():
 
         return redirect(url_for('vis_results'))
 
-    return render_template("search.html")
+    dm = DatabaseManager()
+
+    genpanels = dm.retrieve_genpanel_ids()
+
+    dm.close_conn()
+
+    return render_template("search.html", genpanels=genpanels)
 
 
 @app.route('/results', methods=['POST', 'GET'])
@@ -47,10 +59,10 @@ def vis_results():
     try:
         uuid = session['uuid']
         dm = DatabaseManager()
-        genes, diseases, uuiddb = dm.retreieve_zoekopdracht(uuid)
+        genes, diseases, uuiddb, query = dm.retreieve_zoekopdracht(uuid)
 
         return render_template("results.html", genes=genes, diseases=diseases,
-                               uuid=uuid)
+                               uuid=uuid, query=query)
     except KeyError:
         flash("Voer eerst een zoekopdracht uit of haal deze een op uit de "
               "database!")
@@ -64,9 +76,8 @@ def history():
         user_input_uuid = request.form['uuid']
 
         dm = DatabaseManager()
-        genes, diseases, uuid = dm.retreieve_zoekopdracht(user_input_uuid)
+        genes, diseases, uuid, query = dm.retreieve_zoekopdracht(user_input_uuid)
 
-        # session['uuid'] = uuid
         make_session("uuid", uuid, 2)
 
         return redirect(url_for('vis_results'))

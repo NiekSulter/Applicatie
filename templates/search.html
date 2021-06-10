@@ -8,7 +8,7 @@
         <div class="block p-2">
             <h3>PubMed search</h3>
         </div>
-        <div class="col-4 p-2 mx-auto">
+        <div class="col-5 p-2 mx-auto">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <br>
@@ -22,23 +22,89 @@
             {% endif %}
             {% endwith %}
             <form method="post">
-                <div class="input_wrapper">
-                    <label>Klinisch kenmerk: (AND): </label><input class="form-control input-block"  type="text" placeholder="bijv. deafness" name="and" required>
+                <div class="col-12 float-left">
+                    <label>Voeg zoekterm toe aan de query: </label>
                 </div>
-                <button class="btn btn-outline mt-2" id="add_button" type="button">+</button>
+                <div class="input-block float-left pb-3">
+                    <input class="form-control input-block" id="zoekterm" type="text" placeholder="bijv. deafness" name="and">
+                </div>
+                <div class="float-right">
+                    <details class="dropdown details-reset details-overlay" id="det_keyword">
+                        <summary class="btn" aria-haspopup="true">
+                            Keyword
+                        </summary>
+                        <div class="SelectMenu">
+                            <div class="SelectMenu-modal">
+                                <div class="SelectMenu-list">
+                                    <button class="SelectMenu-item" type="button" onclick="getInput(this)" value="AND">AND</button>
+                                    <button class="SelectMenu-item" type="button" onclick="getInput(this)" value="OR">OR</button>
+                                    <button class="SelectMenu-item" type="button" onclick="getInput(this)" value="NOT">NOT</button>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+                    <details class="details-reset details-overlay col-1" id="det_field">
+                        <summary class="btn" aria-haspopup="true">
+                           <span id="fieldButtonText">Field</span>
+                        </summary>
+                        <div class="SelectMenu">
+                            <div class="SelectMenu-modal">
+                                <div class="SelectMenu-list" id="selectmenu">
+                                    <button class="SelectMenu-item" role="menuitemcheckbox" aria-checked="false" type="button"  value="All fields" onclick="setSelectedTerm(this)">
+                                        <!-- <%= octicon "check", class: "SelectMenu-icon SelectMenu-icon--check" %> -->
+                                        <svg class="SelectMenu-icon SelectMenu-icon--check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z"></path></svg>
+                                        All fields
+                                    </button>
+                                    <button class="SelectMenu-item" role="menuitemcheckbox" aria-checked="false" type="button" value="Author" onclick="setSelectedTerm(this)">
+                                        <!-- <%= octicon "check", class: "SelectMenu-icon SelectMenu-icon--check" %> -->
+                                        <svg class="SelectMenu-icon SelectMenu-icon--check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z"></path></svg>
+                                        Author
+                                    </button>
+                                    <button class="SelectMenu-item" role="menuitemcheckbox" aria-checked="false" type="button" value="Author - First" onclick="setSelectedTerm(this)">
+                                        <!-- <%= octicon "check", class: "SelectMenu-icon SelectMenu-icon--check" %> -->
+                                        <svg class="SelectMenu-icon SelectMenu-icon--check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z"></path></svg>
+                                        Author - First
+                                    </button>
+                                    <button class="SelectMenu-item" role="menuitemcheckbox" aria-checked="false" type="button" value="Author - Last" onclick="setSelectedTerm(this)">
+                                        <!-- <%= octicon "check", class: "SelectMenu-icon SelectMenu-icon--check" %> -->
+                                        <svg class="SelectMenu-icon SelectMenu-icon--check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z"></path></svg>
+                                        Author - Last
+                                    </button>
+                                     <button class="SelectMenu-item" role="menuitemcheckbox" aria-checked="false" type="button" value="Title" onclick="setSelectedTerm(this)">
+                                        <!-- <%= octicon "check", class: "SelectMenu-icon SelectMenu-icon--check" %> -->
+                                        <svg class="SelectMenu-icon SelectMenu-icon--check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z"></path></svg>
+                                        Title
+                                    </button>
+                                    <button class="SelectMenu-item" role="menuitemcheckbox" aria-checked="false" type="button" value="Title/Abstract" onclick="setSelectedTerm(this)">
+                                        <!-- <%= octicon "check", class: "SelectMenu-icon SelectMenu-icon--check" %> -->
+                                        <svg class="SelectMenu-icon SelectMenu-icon--check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z"></path></svg>
+                                        Title/Abstract
+                                    </button>
+                                    <button class="SelectMenu-item" role="menuitemcheckbox" aria-checked="false" type="button" value="ISBN" onclick="setSelectedTerm(this)">
+                                        <!-- <%= octicon "check", class: "SelectMenu-icon SelectMenu-icon--check" %> -->
+                                        <svg class="SelectMenu-icon SelectMenu-icon--check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z"></path></svg>
+                                        ISBN
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
                 <br>
                 <br>
                 <div class="input_wrapper_OR">
-                    <label>Klinisch kenmerk: (OR): </label><input class="form-control input-block" type="text" placeholder="bijv. night blindness" name="or">
+                    <label>Query:</label><textarea id="queryBox" class="form-control input-block" type="text" name="queryBox" style="resize: vertical"></textarea>
                 </div>
-                <button class="btn btn-outline mt-2" id="add_button_OR" type="button">+</button>
                 <br>
                 <br>
                 <label>Zoekdatum vanaf: </label><input class="form-control input-block" type="date" id="datepicker" name="datepicker" required>
                 <br>
                 <br>
                 <label>Exclude genpanel: </label><select class="input-block" id="genpanel_selector" name="genpanels" >
-                    <option value="None">None</option>
+                        <option value="None">None</option>
+                    {% for i in genpanels %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
                 </select>
                 <br>
                 <br>

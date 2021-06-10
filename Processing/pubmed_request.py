@@ -4,23 +4,15 @@ from Processing import parse_pubtator_output
 from Database.databasemanager import DatabaseManager
 
 
-def build_term(TOR, TAND):
-    term = ""
-    AND = ' AND '.join(TOR)
-    OR = ' OR '.join(TAND)
-
-    term = AND + " OR " + OR
-
-    print(term)
-
-    return term
-
-
 def article_search(term, date):
-    print(date)
+    """
+    Makes an entrez search using search terms and a date.
+    :param term:
+    :param date:
+    :return: a list containing all ID's from the entrez request
+    """
 
-    handle = Entrez.esearch(db="pubmed", term=term, field="title",
-                            mindate=date)
+    handle = Entrez.esearch(db="pubmed", term=term, mindate=date)
     record = Entrez.read(handle)
     handle.close()
 
@@ -28,7 +20,13 @@ def article_search(term, date):
     return idList
 
 
-def annotate_search(idList):
+def annotate_search(idList, term):
+    """
+    Makes a search request using the pubtator api, then extracts and formats the results.
+    :param idList:
+    :param term:
+    :return:
+    """
     ids = ','.join(idList)
 
     url = f"https://www.ncbi.nlm.nih.gov/research/pubtator-api/publications" \
@@ -37,57 +35,34 @@ def annotate_search(idList):
 
     genes, diseases = parse_pubtator_output.extract_gene(result.text)
 
+    return genes, diseases
+
+
+def database_insert(genes, diseases, term):
+
     dm = DatabaseManager()
 
-    uuid = dm.insert_zoekopdracht(genes, diseases)
+    uuid = dm.insert_zoekopdracht(genes, diseases, term)
 
     dm.close_conn()
 
-    return genes, diseases, uuid
+    return uuid
 
 
-def make_request(TOR, TAND, date, email):
+def make_request(term, date, email):
+    """
+    Entry point of the script, calls functions that do the actual request
+    :param term: search terms given by the user
+    :param date: date inputted by the user
+    :param email: email inputted by the user
+    :return: Returns the annotated results of the search request in a predetermined format
+    """
     Entrez.email = email
     #Entrez.api_key = NCBI_API_KEY
 
-    term = build_term(TOR, TAND)
     idList = article_search(term, date)
 
-    return annotate_search(idList)
+    genes, diseases = annotate_search(idList, term)
 
-'''
-class PubmedPipeline:
+    return database_insert(genes, diseases, term)
 
-    def __init__(self):
-        self.API_email = NCBI_API_MAIL
-        self.API_KEY = NCBI_API_KEY
-
-    def build_term(self, TOR, TAND):
-        term = ""
-        AND = ' AND '.join(TOR)
-        OR = ' OR '.join(TAND)
-
-        term = AND + " OR " + OR
-
-        return term
-
-    def article_search(self, term, date):
-        print(date)
-
-        handle = Entrez.esearch(db="pubmed", term=term, field="title",
-                                mindate=date)
-        record = Entrez.read(handle)
-        handle.close()
-
-        idList = record['IdList']
-        return idList
-
-    def pubtator_annotation(self, idList):
-        ids = ','.join(idList)
-
-        url = f"https://www.ncbi.nlm.nih.gov/research/pubtator-api/publications" \
-              f"/export/pubtator?pmids={ids}&concepts=gene"
-        result = requests.get(url)
-
-        print(result.text)
-'''
