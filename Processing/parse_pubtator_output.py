@@ -2,6 +2,11 @@ import re
 
 
 def extract_gene(results):
+    """
+    Extracts the genes and diseases from the annotated search results.
+    :param results:
+    :return: genes, diseases. two dictionaries containing gene names, nr. of occurences and original article ID's
+    """
     genes = {}
     diseases = {}
     results = results.split("\n")
