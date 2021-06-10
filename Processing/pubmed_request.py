@@ -4,13 +4,27 @@ from Processing import parse_pubtator_output
 from Database.databasemanager import DatabaseManager
 
 
+# def build_term(TOR, TAND):
+#     term = ""
+#     AND = ' AND '.join(TOR)
+#     OR = ' OR '.join(TAND)
+#
+#     term = AND + " OR " + OR
+#
+#     print(term)
+#
+#     return term
+
+
 def article_search(term, date):
     """
-    functie om artikelen van pubmed op te halen.
-    :param term: de zoekterm die door de gebruiker is ingevoerd op de website
-    :param date: de datum die door de gebruiker is ingevoerd op de website
-    :return: een lijst met de pubmed id's van alle gevonden artikelen
+    Makes an entrez search using search terms and a date.
+    :param term:
+    :param date:
+    :return: a list containing all ID's from the entrez request
     """
+    print(date)
+
     handle = Entrez.esearch(db="pubmed", term=term, mindate=date)
     record = Entrez.read(handle)
     handle.close()
@@ -19,12 +33,12 @@ def article_search(term, date):
     return idList
 
 
-def annotate_search(idList, genpanel):
+def annotate_search(idList, term):
     """
-    functie om de gevonden artikelen op pubmet te annoteren m.b.v. de pubtator
-    api
-    :param idList: een lijst met de pubmed id's van alle gevonden artikelen
-    :return: twee dictionaries, een met genen en een met diseases.
+    Makes a search request using the pubtator api, then extracts and formats the results.
+    :param idList:
+    :param term:
+    :return:
     """
     ids = ','.join(idList)
 
@@ -32,49 +46,29 @@ def annotate_search(idList, genpanel):
           f"/export/pubtator?pmids={ids}&concepts=gene,disease"
     result = requests.get(url)
 
-    genes, diseases = parse_pubtator_output.extract_gene(result.text, genpanel)
+    genes, diseases = parse_pubtator_output.extract_gene(result.text)
 
-    return genes, diseases
-
-
-def database_insert(genes, diseases, term):
-    """
-    functie voor het inserten van een zoekopdracht in de database
-    :param genes: dictionary met gevonden genen-
-    :param diseases: dictionary met gevonden diseases
-    :param term: de zoekterm die door de gebruiker is ingevoerd op de website
-    :return: een universally unique identifier die de zoekopdracht
-    identificeert
-    """
     dm = DatabaseManager()
 
     uuid = dm.insert_zoekopdracht(genes, diseases, term)
 
     dm.close_conn()
 
-    return uuid
+    return genes, diseases, uuid
 
 
-def make_request(term, date, email, genpanel):
+def make_request(term, date, email):
     """
-    functie om de request pipeline aan te sturen
-    :param term: de zoekterm die door de gebruiker is ingevoerd op de website
-    :param date: de datum die door de gebruiker is ingevoerd op de website
-    :param email: de email die door de gebruiker is ingevoerd op de website
-    :return: een universally unique identifier die de zoekopdracht
-    identificeert
+    Entry point of the script, calls functions that do the actual request
+    :param term: search terms given by the user
+    :param date: date inputted by the user
+    :param email: email inputted by the user
+    :return: Returns the annotated results of the search request in a predetermined format
     """
     Entrez.email = email
+    #Entrez.api_key = NCBI_API_KEY
 
     idList = article_search(term, date)
 
-    dm = DatabaseManager()
+    return annotate_search(idList, term)
 
-    if genpanel != "None":
-        gp = dm.retrieve_genpanel(genpanel)
-    else:
-        gp = "None"
-
-    genes, diseases = annotate_search(idList, gp)
-
-    return database_insert(genes, diseases, term)
