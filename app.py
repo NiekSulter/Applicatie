@@ -60,8 +60,7 @@ def vis_results():
         uuid = session['uuid']
         dm = DatabaseManager()
         genes, diseases, uuiddb, query = dm.retreieve_zoekopdracht(uuid)
-        print(genes)
-        print(diseases)
+
         return render_template("results.html", genes=genes, diseases=diseases,
                                uuid=uuid, query=query)
     except KeyError:

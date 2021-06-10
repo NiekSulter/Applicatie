@@ -11,7 +11,6 @@ def article_search(term, date):
     :param date:
     :return: a list containing all ID's from the entrez request
     """
-    print(date)
 
     handle = Entrez.esearch(db="pubmed", term=term, mindate=date)
     record = Entrez.read(handle)

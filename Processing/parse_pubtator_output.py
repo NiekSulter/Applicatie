@@ -13,6 +13,7 @@ def extract_gene(results):
     results_it = iter(results)
     for line in results_it:
         filterlist = []
+        print(line)
         if re.match(r'^\d+\t\d+\t\d+\t', line) is not None:
             line_list = line.upper().strip().split('\t')
             articleid = line_list[0]
@@ -27,19 +28,32 @@ def extract_gene(results):
                 #     continue
                 if articleid not in genes.keys():
                     genes[articleid] = {}
-                    genes[articleid][name] = [name, line_list[5], 1]
+                    try:
+                        genes[articleid][name] = [name, line_list[5], 1]
+                    except IndexError:
+                        genes[articleid][name] = [name, '-', 1]
                 elif articleid in genes.keys():
                     if name in genes[articleid].keys():
                         genes[articleid][name][2] += 1
                     else:
-                        genes[articleid][name] = [name, line_list[5], 1]
+                        try:
+                            genes[articleid][name] = [name, line_list[5], 1]
+                        except IndexError:
+                            genes[articleid][name] = [name, '-', 1]
             elif annotype == "DISEASE":
                 if articleid not in diseases.keys():
                     diseases[articleid] = {}
-                    diseases[articleid][name] = [name, line_list[5], 1]
+                    try:
+                        diseases[articleid][name] = [name, line_list[5], 1]
+                    except IndexError:
+                        diseases[articleid][name] = [name, '-', 1]
                 elif articleid in diseases.keys():
                     if name in diseases[articleid].keys():
                         diseases[articleid][name][2] += 1
                     else:
-                        diseases[articleid][name] = [name, line_list[5], 1]
+                        try:
+                            diseases[articleid][name] = [name, line_list[5], 1]
+                        except IndexError:
+                            diseases[articleid][name] = [name, '-', 1]
+
     return genes, diseases
