@@ -22,7 +22,7 @@ def search():
         email = request.form['email']
         search_history = []
 
-        uuid = pr.make_request(term, str(date), email)
+        uuid = pr.make_request(term, str(date), email, genpanel)
         make_session("uuid", uuid, 2)
 
         if session.get('history'):

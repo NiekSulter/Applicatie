@@ -19,7 +19,7 @@ def article_search(term, date):
     return idList
 
 
-def annotate_search(idList):
+def annotate_search(idList, genpanel):
     """
     functie om de gevonden artikelen op pubmet te annoteren m.b.v. de pubtator
     api
@@ -32,7 +32,7 @@ def annotate_search(idList):
           f"/export/pubtator?pmids={ids}&concepts=gene,disease"
     result = requests.get(url)
 
-    genes, diseases = parse_pubtator_output.extract_gene(result.text)
+    genes, diseases = parse_pubtator_output.extract_gene(result.text, genpanel)
 
     return genes, diseases
 
@@ -40,7 +40,7 @@ def annotate_search(idList):
 def database_insert(genes, diseases, term):
     """
     functie voor het inserten van een zoekopdracht in de database
-    :param genes: dictionary met gevonden genen
+    :param genes: dictionary met gevonden genen-
     :param diseases: dictionary met gevonden diseases
     :param term: de zoekterm die door de gebruiker is ingevoerd op de website
     :return: een universally unique identifier die de zoekopdracht
@@ -55,7 +55,7 @@ def database_insert(genes, diseases, term):
     return uuid
 
 
-def make_request(term, date, email):
+def make_request(term, date, email, genpanel):
     """
     functie om de request pipeline aan te sturen
     :param term: de zoekterm die door de gebruiker is ingevoerd op de website
@@ -68,6 +68,13 @@ def make_request(term, date, email):
 
     idList = article_search(term, date)
 
-    genes, diseases = annotate_search(idList)
+    dm = DatabaseManager()
+
+    if genpanel != "None":
+        gp = dm.retrieve_genpanel(genpanel)
+    else:
+        gp = "None"
+
+    genes, diseases = annotate_search(idList, gp)
 
     return database_insert(genes, diseases, term)
