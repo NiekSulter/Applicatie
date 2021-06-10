@@ -4,6 +4,24 @@
 
 {% block body %}
 
-    <p>home go brr</p>
-
+    <p>Homepage of </p>
+    <p>This app is used to find genes that are fairly new and aren't a part of Radboud's genpanels yet.</p>
+    <p>How to search for results:<br>
+    1. Make a query to search your desired results with.<br>
+    2. Select The field you want to search.<br>
+    3. Add to the query by entering search terms to the textbox, use either, 'AND', 'OR' or 'NOT' to <br>
+    4. Enter a date to find only articles published since the date.<br>
+    5. Exclude genpanels if desired.<br>
+    6. Enter email, to easily access results.<br>
+    <p> How to interpret results:<br>
+        1. On the top of page a UUID will be displayed, with this you'll be able to find your results again.<br>
+        2. Under the UUID your search query will be displayed.<br>
+    3. The left column display newly found genes, together with their gene id, how often they're found in a article,
+        and the article ID of the article they're found in.<br>
+    4. The right column will display the disease name, toghether with their MESH id, how often they're found in
+        a article and the article id of the article they're found in.<br>
+    5. You can click on either the genes or diseases to highlight the ones found in the same article</p>
+    <p> How to use history:<br>
+    1. Use either the UUID or your mail to access your results<br>
+    2. You'll be send back to the results page with your old results<br>
 {% endblock %}
