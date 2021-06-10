@@ -42,6 +42,4 @@ def extract_gene(results):
                         diseases[articleid][name][2] += 1
                     else:
                         diseases[articleid][name] = [name, line_list[5], 1]
-    print(genes)
-    print(diseases)
     return genes, diseases

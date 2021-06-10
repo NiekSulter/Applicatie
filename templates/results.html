@@ -36,13 +36,15 @@
                             <th>Count</th>
                             <th>Article id</th>
                         </tr>
-                {% for key, value in genes.items() %}
+                {% for articleid, dict in genes.items() %}
+                    {% for genename, values in genes[articleid].items() %}
                         <tr>
-                            <td onclick="highlightWord(this)">{{ value[0] }}</td>
-                            <td onclick="highlightWord(this)">{{ value[1] }}</td>
-                            <td onclick="highlightWord(this)">{{ value[2] }}</td>
-                            <td onclick="highlightWord(this)" id="articleID"><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ key }}">{{ key }}</a></td>
+                            <td onclick="highlightWord(this)">{{ values[0] }}</td>
+                            <td onclick="highlightWord(this)">{{ values[1] }}</td>
+                            <td onclick="highlightWord(this)">{{ values[2] }}</td>
+                            <td onclick="highlightWord(this)" id="articleID"><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ articleid }}">{{ articleid }}</a></td>
                         </tr>
+                    {% endfor %}
                 {% endfor %}
                 </table>
             </div>
@@ -58,13 +60,15 @@
                                 <th>Count</th>
                                 <th>Article id</th>
                             </tr>
-                        {% for key, value in diseases.items() %}
+                        {% for articleid, dict in diseases.items() %}
+                            {% for diseasename, values in diseases[articleid].items() %}
                             <tr>
-                                <td>{{ value[0] }}</td>
-                                <td>{{ value[1] }}</td>
-                                <td>{{ value[2] }}</td>
-                                <td><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ key }}">{{ key }}</a></td>
+                                <td>{{ values[0] }}</td>
+                                <td>{{ values[1] }}</td>
+                                <td>{{ values[2] }}</td>
+                                <td><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ articleid }}">{{ articleid }}</a></td>
                             </tr>
+                            {% endfor %}
                         {% endfor %}
                         </table>
                 </div>

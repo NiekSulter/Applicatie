@@ -39,7 +39,6 @@ def annotate_search(idList, term):
     return genes, diseases
 
 
-
 def database_insert(genes, diseases, term):
 
     dm = DatabaseManager()

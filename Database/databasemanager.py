@@ -50,11 +50,7 @@ class DatabaseManager:
         the uuid and the search query
         """
 
-        print("USERID", userid)
-
         out = self.db.collection.find_one({"_id": userid})
-
-        print("OUT", out)
 
         genes = out['res'][0]
         diseases = out['res'][1]
