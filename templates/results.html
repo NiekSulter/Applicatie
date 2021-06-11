@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %} Gene finder - Results{% endblock %}
+{% block title %} MEDmine - Results{% endblock %}
 
 {% block body %}
 
     <div class="d-flex flex-justify-center flex-wrap">
-        <h2>Results for uuid: {{ uuid }}</h2>
+        <h2>Results for UUID: {{ uuid }}</h2>
     </div>
 
-    <br>
+    <hr>
 
     <div class="d-flex flex-justify-center flex-wrap pb-2">
         <h3>Search query:</h3>
@@ -19,15 +19,24 @@
                 <pre><code>{{ query }}</code></pre>
         </div>
     </div>
-    <hr>
 
     <br>
+
+    <div class="d-flex flex-justify-center flex-wrap">
+        <p>Excluded genpanel: {{ genpanel }}</p>
+    </div>
+
+    <div class="d-flex flex-justify-center flex-wrap">
+        <p>Earliest publishing date: {{ date }} </p>
+    </div>
+
+    <hr>
 
     <div class="d-flex flex-justify-center">
         <div class="p-4 pr-7">
             <div class="markdown-body">
 
-                <p><b>Gevonden genen in zoekopdracht</b></p>
+                <p><b>Genes found in search:</b></p>
 
                 <table id="GeneTable">
                         <tr>
@@ -52,7 +61,7 @@
 
         <div class="p-4 pl-7">
             <div class="markdown-body">
-                <p><b>Gevonden diseases in zoekopdracht</b></p>
+                <p><b>Found diseases in search:</b></p>
                         <table id="DiseaseTable">
                             <tr>
                                 <th>Disease Name</th>
@@ -63,10 +72,10 @@
                         {% for articleid, dict in diseases.items() %}
                             {% for diseasename, values in diseases[articleid].items() %}
                             <tr>
-                                <td>{{ values[0] }}</td>
-                                <td>{{ values[1] }}</td>
-                                <td>{{ values[2] }}</td>
-                                <td><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ articleid }}">{{ articleid }}</a></td>
+                                <td onclick="highlightWord(this)">{{ values[0] }}</td>
+                                <td onclick="highlightWord(this)">{{ values[1] }}</td>
+                                <td onclick="highlightWord(this)">{{ values[2] }}</td>
+                                <td onclick="highlightWord(this)"><a href="https://www.ncbi.nlm.nih.gov/research/pubtator/?view=docsum&query={{ articleid }}">{{ articleid }}</a></td>
                             </tr>
                             {% endfor %}
                         {% endfor %}

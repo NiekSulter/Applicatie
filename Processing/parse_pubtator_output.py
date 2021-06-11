@@ -1,7 +1,7 @@
 import re
 
 
-def extract_gene(results):
+def extract_gene(results, genpanel):
     """
     Extracts the genes and diseases from the annotated search results.
     :param results:
@@ -19,13 +19,13 @@ def extract_gene(results):
             name = line_list[3]
             annotype = line_list[4]
             if annotype == "GENE":
-                # if genpanel != "None":
-                #     for key in genpanel:
-                #         if name in key or name in list(key.values())[0]:
-                #             filterlist.append(name)
-                # if name in filterlist:
-                #     continue
-                if articleid not in genes.keys():
+                if genpanel != "None":
+                    for key in genpanel:
+                        if name in key or name in list(key.values())[0]:
+                            filterlist.append(name)
+                if name in filterlist:
+                    continue
+                elif articleid not in genes.keys():
                     genes[articleid] = {}
                     try:
                         genes[articleid][name] = [name, line_list[5], 1]
