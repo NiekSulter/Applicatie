@@ -7,8 +7,8 @@ from Database.databasemanager import DatabaseManager
 def article_search(term, date):
     """
     Makes an entrez search using search terms and a date.
-    :param term:
-    :param date:
+    :param term: search query
+    :param date: date inputted by the user
     :return: a list containing all ID's from the entrez request
     """
 
@@ -23,9 +23,9 @@ def article_search(term, date):
 def annotate_search(idList, genpanel):
     """
     Makes a search request using the pubtator api, then extracts and formats the results.
-    :param idList:
-    :param term:
-    :return:
+    :param idList: list with article ids
+    :param term: search query
+    :return: dictionaries with the genes and diseases
     """
     ids = ','.join(idList)
 
