@@ -9,7 +9,9 @@ def read_file(file):
     :return: df(dataframe)
     """
     df = pandas.read_excel(file, dtype=str)
-    df = df[df.columns[df.columns.isin(['Symbol_HGNC', 'Aliases', 'GenePanels_Symbol', 'GenePanel', 'GenePanelCount'])]]
+    df = df[df.columns[df.columns.isin(['Symbol_HGNC',
+                                        'Aliases', 'GenePanels_Symbol',
+                                        'GenePanel', 'GenePanelCount'])]]
     return df
 
 
@@ -37,11 +39,13 @@ def make_dict(df):
         symbol = row['Symbol_HGNC']
         aliases = row['Aliases']
         for i in range(len(panels)):
-            # Sometimes there are no aliases, if this is the case no value is added to the dictionary
+            # Sometimes there are no aliases, if this is the case no value
+            # is added to the dictionary
             if isinstance(aliases, float):
                 aliases_dict[symbol] = []
             else:
-                # if there are multple aliases they are split, and added to the dictionary
+                # if there are multple aliases they are split, and added
+                # to the dictionary
                 split_aliases = aliases.split("|")
                 aliases_dict[symbol] = split_aliases
             # A nested dictionary is made, or new data is added to it

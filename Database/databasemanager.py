@@ -15,7 +15,8 @@ class DatabaseManager:
         usr = variables.MONGO_ATLAS_USER
         pwd = variables.MONGO_ATLAS_PASS
         self.client = MongoClient(
-            f"mongodb+srv://{usr}:{pwd}@cluster0.thgnd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+            f"mongodb+srv://{usr}:{pwd}@cluster0.thgnd.mongodb.net/"
+            f"myFirstDatabase?retryWrites=true&w=majority")
         self.db = self.client.Course8_test
 
     def insert_zoekopdracht(self, genes, diseases, query, genpanel, date):

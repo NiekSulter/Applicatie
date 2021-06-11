@@ -1,3 +1,7 @@
+/**
+ * function to get the user input from the "Add term to query" textfield along with the selected keyword.
+ * @param el the selected keyword button
+ */
 function getInput(el) {
     let input = document.getElementById("zoekterm").value
     let AON = el.value
@@ -9,11 +13,19 @@ function getInput(el) {
     getQueryTerm(input, AON)
 }
 
+/**
+ * function to get all possible options from the "field" selector
+ * @returns {HTMLButtonElement[]} array with all possible options
+ */
 function getButtonList() {
     let buttonDiv = document.getElementById("selectmenu")
     return Array.from(buttonDiv.getElementsByTagName("button"))
 }
 
+/**
+ * function the place a checkmark when a user selects a search field with "field" selector
+ * @param el field selector element
+ */
 function setSelectedTerm(el) {
     let buttonSpan = document.getElementById("fieldButtonText")
     let buttonList = getButtonList()
@@ -26,6 +38,11 @@ function setSelectedTerm(el) {
     document.getElementById("det_field").removeAttribute("open")
 }
 
+/**
+ * function to combine the user input, selected keyword and search field into a single entry, this entry gets added to the query box.
+ * @param term the user submitted term
+ * @param AON the user selected keyword
+ */
 function getQueryTerm(term, AON) {
     let queryBox = document.getElementById("queryBox")
     let buttonList = getButtonList()
@@ -46,5 +63,4 @@ function getQueryTerm(term, AON) {
     } else {
         queryBox.value = termFormatted
     }
-
 }
